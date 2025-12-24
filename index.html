@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="style_mobile.css" rel="stylesheet" media="(max-width:600px)"/>
+    <!-- 모바일용 css -->
+    <link href="style.css" rel="stylesheet" media="(min-width:600px)"/>
+    <!-- PC용 css -->
+    <title>Prayers for Us</title>
+</head>
+<body>
+    <div>
+        <img id="img1" src="image/img1.png"/> <!-- 로고 -->
+    </div>
+    <div>
+        <img id="img2" src="image/img2.png"/> <!-- 성경절 PC -->
+    </div>
+    <div>
+        <img id="img2_1" src="image/img2_1.png"/> <!-- 성경절 모바일 -->
+    </div>
+    <div id="blank1">
+        <img id="img3" src="image/img3.png"/> <!-- 입력 요청 -->
+    </div>
+    <div id="blank2">
+    </div>
+    <form action="/save" method="POST">
+        <textarea id="text1" name="secretContent" type="text" required></textarea> <!-- 입력창 -->
+        <div id="blank3">
+        </div>
+        <div>
+        <button type="submit"> To The Prayers Group</button> <!-- 제출 버튼 -->
+        </div>
+    </form>
+    <div id="blank4">
+    </div>
+    <div>
+        <img id="img4" src="image/img4.png"/> <!-- 하단 문구 -->
+    </div>
+</body>
+</html>
