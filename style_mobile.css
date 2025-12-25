@@ -46,14 +46,14 @@
         height: 100%;
         width: 70vw;
 
-        font-size: 4vw;
-        background-color: white;
-        border: solid gray 1px;
-        border-radius: 3px;
-
         /* 사파리 기본 스타일 제거 */
         -webkit-appearance: none;
         appearance: none;
+
+        font-size: 4vw;
+        background-color: white;
+        border: solid gray 1px;
+        border-radius: 3px;        
     
         /* 글자가 잘리지 않도록 높이와 여백 확인 */
         line-height: normal; 
