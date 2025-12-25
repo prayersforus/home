@@ -36,3 +36,24 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`서버가 http://localhost:${PORT} 에서 실행 중입니다.`);
 });
+// 저장된 비밀 목록 확인하기 (관리자용)
+// 관리자 페이지 (비밀번호 확인 기능 추가)
+app.get('/admin', (req, res) => {
+    const password = req.query.pw; // 주소창의 ?pw=값 을 가져옴
+    const myPassword = "rleh"; // 여기에 본인만 알 비밀번호를 설정하세요
+
+    if (password !== myPassword) {
+        return res.status(403).send("<h1>접근 권한이 없습니다.</h1><p>비밀번호가 틀렸거나 입력되지 않았습니다.</p>");
+    }
+
+    const filePath = path.join(__dirname, 'secret.txt');
+    fs.readFile(filePath, 'utf8', (err, data) => {
+        if (err) return res.send("저장된 내용이 없습니다.");
+        
+        res.send(`
+            <h1>비밀 목록 (관리자 전용)</h1>
+            <pre style="background:#eee; padding:20px;">${data}</pre>
+            <a href="/">홈으로</a>
+        `);
+    });
+});
