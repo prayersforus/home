@@ -1,12 +1,12 @@
 const express = require('express');
-const mongoose = require('mongoose'); // mongoose 추가
+const mongoose = require('mongoose');
 const path = require('path');
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname));
 
-// 1. MongoDB 연결 (복사한 주소를 여기에 넣으세요)
+// 1. MongoDB 연결
 const mongoURI = "mongodb+srv://prayersforus3004_db_user:rlehgkwk12Bdmd@prayersforus.07y7sx8.mongodb.net/?appName=Prayersforus";
 mongoose.connect(mongoURI)
   .then(() => console.log("MongoDB 연결 성공!"))
@@ -19,42 +19,31 @@ const PrayerSchema = new mongoose.Schema({
 });
 const Prayer = mongoose.model('Prayer', PrayerSchema);
 
-// 저장 로직 수정
+// 3. 저장 로직
 app.post('/save', async (req, res) => {
     try {
         const newPrayer = new Prayer({
             content: req.body.secretContent
         });
-        await newPrayer.save(); // DB에 저장
+        await newPrayer.save();
         res.redirect('/response.html');
     } catch (err) {
         res.status(500).send("저장 실패");
     }
 });
 
-// 관리자 페이지 수정 (DB에서 가져오기)
-app.get('/admin', async (req, res) => {
-    if (req.query.pw !== "1234") return res.status(403).send("권한 없음");
-    
-    const prayers = await Prayer.find().sort({ date: -1 }); // 최신순 정렬
-    let listHtml = prayers.map(p => `<li>${p.date.toLocaleString()}: ${p.content}</li>`).join('');
-    
-    res.send(`<h1>비밀 목록</h1><ul>${listHtml}</ul><a href="/">홈으로</a>`);
-});
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-
-// 관리자 페이지: https://내주소.onrender.com/admin?pw=1234 로 접속
+// 4. 관리자 페이지 (비밀번호를 "rleh"로 통일했습니다)
 app.get('/admin', async (req, res) => {
     const password = req.query.pw;
-    console.log("입력된 비밀번호:", password); // 추가: Render 로그에서 확인할 수 있음
-    if (password !== "rleh") { // 본인만의 비밀번호로 변경하세요
-        return res.status(403).send("접근 권한이 없습니다.");
+    
+    // 로그에서 확인용
+    console.log("입력된 비밀번호:", password);
+
+    if (password !== "rleh") { 
+        return res.status(403).send(`<h1>접근 권한이 없습니다.</h1><p>입력된 비밀번호: ${password}</p>`);
     }
 
     try {
-        // DB에서 모든 데이터를 가져와서 최신순으로 정렬
         const prayers = await Prayer.find().sort({ date: -1 });
         
         let listHtml = prayers.map(p => `
@@ -80,3 +69,6 @@ app.get('/admin', async (req, res) => {
         res.status(500).send("데이터를 불러오는 중 오류가 발생했습니다.");
     }
 });
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
