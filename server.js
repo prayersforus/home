@@ -48,6 +48,7 @@ app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 // 관리자 페이지: https://내주소.onrender.com/admin?pw=1234 로 접속
 app.get('/admin', async (req, res) => {
     const password = req.query.pw;
+    console.log("입력된 비밀번호:", password); // 추가: Render 로그에서 확인할 수 있음
     if (password !== "rleh") { // 본인만의 비밀번호로 변경하세요
         return res.status(403).send("접근 권한이 없습니다.");
     }
